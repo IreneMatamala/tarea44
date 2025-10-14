@@ -1,17 +1,11 @@
-FROM python:3.9-slim
-
-
-RUN groupadd -r appuser && useradd -r -g appuser appuser
+FROM python:3.9
 
 WORKDIR /app
 
-COPY app/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-
-COPY app/ .
-
-USER appuser
+COPY . .
 
 EXPOSE 8000
 

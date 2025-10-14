@@ -1,23 +1,17 @@
-name: Gitleaks Security Scan
+name: Security Scan
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
   gitleaks:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Run Gitleaks
-      uses: zricethezav/gitleaks-action@v2
-      with:
-        config-path: .gitleaks.toml
-        redact: true
-        exit-code: 1
+      - name: Run Gitleaks
+        uses: zricethezav/gitleaks-action@v2
+        env:
+          GITLEAKS_CONFIG: .gitleaks.toml

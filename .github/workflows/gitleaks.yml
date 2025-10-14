@@ -1,17 +1,42 @@
-name: Security Scan
+name: Gitleaks + Trivy
 
-on: [push, pull_request]
+on:
+push:
+branches: [ main ]
+pull_request:
+branches: [ main ]
+
 
 jobs:
-  gitleaks:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+security:
+runs-on: ubuntu-latest
+steps:
+- name: Checkout
+uses: actions/checkout@v4
+with:
+fetch-depth: 0 # necesario para gitleaks que revisa el history
 
-      - name: Run Gitleaks
-        uses: zricethezav/gitleaks-action@v2
-        env:
-          GITLEAKS_CONFIG: .gitleaks.toml
+
+- name: Set up QEMU (for multi-platform builds if needed)
+uses: docker/setup-qemu-action@v2
+
+
+- name: Run Gitleaks
+uses: zricethezav/gitleaks-action@v2
+with:
+args: '--config .gitleaks.toml --redact --verbose'
+
+
+
+- name: Build Docker image
+run: |
+docker build -t tarea44-app:latest .
+
+
+- name: Scan image with Trivy
+uses: aquasecurity/trivy-action@master
+with:
+image-ref: tarea44-app:latest
+format: 'table'
+exit-code: '1' # exit-code 1 means vulnerabilities of severity >= severity-threshold will make action fail
+severity: 'CRITICAL,HIGH'

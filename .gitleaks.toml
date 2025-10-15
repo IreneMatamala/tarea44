@@ -1,13 +1,21 @@
 title = "gitleaks config"
 
 [[rules]]
-id = "aws-access-key"
 description = "AWS Access Key ID"
 regex = '''(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}'''
 tags = ["key", "AWS"]
 
 [[rules]]
-id = "generic-api-key"
+description = "Azure Storage Account Key"
+regex = '''AccountName=[^;]+;AccountKey=[^;]+'''
+tags = ["key", "Azure"]
+
+[[rules]]
 description = "Generic API Key"
-regex = '''(?i)(api_key|apikey)(.{0,20})?['\"][0-9a-zA-Z]{16,45}['\"]'''
-tags = ["key", "API"]
+regex = '''(?i)(api_key|apikey|secret_key|secretkey)(\s*=\s*['\"][^'\"]+['\"])'''
+tags = ["key", "generic"]
+
+[[rules]]
+description = "Password in connection string"
+regex = '''(?i)(password|pwd)(\s*=\s*['\"][^'\"]+['\"])'''
+tags = ["password", "generic"]

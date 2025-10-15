@@ -1,11 +1,11 @@
-title = "Configuración básica Gitleaks"
+title = "Configuración Gitleaks"
 
 [[rules]]
-description = "Detección de passwords"
+id = "no-passwords"
+description = "No subir passwords en el código"
 regex = '''(password|pwd)=['"][^'"]+['"]'''
-tags = ["password"]
 
 [[rules]]
-description = "API keys genéricas"
+id = "no-api-keys" 
+description = "No subir API keys"
 regex = '''(api_key|apikey)=['"][^'"]+['"]'''
-tags = ["api-key"]

@@ -1,25 +1,16 @@
-FROM python:3.9-alpine
+FROM python:3.9-slim
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN useradd -m appuser
 
 WORKDIR /app
 
-COPY ./app/requirements.txt .
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-
-COPY ./app .
-
-
-RUN chown -R appuser:appgroup /app
-
+COPY app.py .
 
 USER appuser
 
-
 EXPOSE 8000
 
-
-CMD ["python", "main.py"]
+CMD ["python", "app.py"]

@@ -13,7 +13,6 @@ def salud():
 
 @app.route('/secreto')
 def secreto():
-    # Esto simula obtener un secreto de Azure Key Vault
     secreto_simulado = "***CONEXION_BD_OCULTA***"
     return jsonify({
         "secreto_enmascarado": secreto_simulado,
